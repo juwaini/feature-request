@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hds.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        
+    <title>{% block title %} {% endblock title %} - Healthcare Database System</title>
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+    
+        <div class="page-header">
+            <img src="{{ url_for('static', filename='img/cisirlogo.jpg')}}">
+        </div>
+ 
+        <div class="row" id="top">
+            <div class="col-md-2">
+                <ul id="navigation" class="nav nav-pills nav-stacked" role="tablist">
+                    <li role="presentation" class="active"><a role="tab" data-toggle="tab" href="#patients">Patients</a></li>
+                    <li role="presentation"><a role="tab" data-toggle="tab" href="#doctors">Doctors</a></li>
+                    <li role="presentation"><a role="tab" data-toggle="tab" href="#hospitals">Hospitals</a></li>
+                    <li role="presentation"><a role="tab" data-toggle="tab" href="#diagnostics">Diagnostics</a></li>
+                </ul><br />
+                
+                <ul id="logout" class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="logout">Logout</a></li>
+                </ul>
+            </div>
+        </div> 
+
+    </div>
+</body>
+
+</html>
