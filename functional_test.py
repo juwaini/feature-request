@@ -18,6 +18,7 @@ class TestFlaskPage(unittest.TestCase):
         #self.redirect_to_login_page()
         self.go_to_correct_website()
         self.displaying_correct_subpage()
+        self.opening_add_new_feature_request_modal()
         #self.correctly_redirect_to_logout()
 
     def go_to_correct_website(self):
@@ -49,6 +50,17 @@ class TestFlaskPage(unittest.TestCase):
                 )
         self.assertTrue(self.browser.find_element_by_id('feature-request').is_displayed())
 
+    def opening_add_new_feature_request_modal(self):
+        """
+        Click 'Add New Feature Request' button and open a modal
+        """
+        self.browser.find_element_by_id('create-new-feature-request').click()
+        WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located((By.ID, "feature-request-create-modal"))
+                )
+        self.assertTrue(self.browser.find_element_by_id('feature-request-create-modal').is_displayed())
+
+        self.assertIn('Create New Feature Request', self.browser.find_element_by_class_name('modal-title').text)
 
 if __name__ == '__main__':
     unittest.main()
