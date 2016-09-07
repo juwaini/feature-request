@@ -27,9 +27,9 @@
     <ul id="navigation" class="nav nav-pills nav-stacked" role="tablist">
         {% for panel in panels %}
             {% if loop.index0 == 0 %}
-            <li role="presentation" class="active"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
+            <li id="{{ panel.href }}-nav" role="presentation" class="active"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
             {% else %}
-            <li role="presentation"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
+            <li id="{{ panel.href }}-nav" role="presentation"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
             {% endif %}
         {% endfor %}
     </ul><br />
