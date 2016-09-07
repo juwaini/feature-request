@@ -64,10 +64,9 @@
         <table id="{{ panel.href }}-table" class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
+                    {% for thead in panel.theads %}
+                    <th>{{ thead }}</th>
+                    {% endfor %}
                 </tr>
             </thead>
         </table>
