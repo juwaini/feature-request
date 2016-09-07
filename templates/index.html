@@ -1,1 +1,79 @@
 {% extends 'base.html' %}
+
+{% block style %}
+<style>
+#logout.nav-pills > li.active > a {
+        background-color:red;
+}
+.nav-pills>li.active>a:hover {
+    background-color:red;
+}
+</style>
+{% endblock style %}
+
+{% block head %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hds.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block title %}
+<title>BriteCore Feature Request</title>
+{% endblock title %}
+
+{% block leftnav %}
+<div class="col-md-2">
+    <ul id="navigation" class="nav nav-pills nav-stacked" role="tablist">
+        {% for panel in panels %}
+            {% if loop.index0 == 0 %}
+            <li role="presentation" class="active"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
+            {% else %}
+            <li role="presentation"><a role="tab" data-toggle="tab" href="#{{ panel.href }}">{{ panel.text }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul><br />
+    
+    <ul id="logout" class="nav nav-pills nav-stacked">
+        <li class="active"><a href="logout">Logout</a></li>
+    </ul>
+</div><!-- .col-md-2 -->
+{% endblock leftnav %}
+
+{% block mainbody %}
+{% for panel in panels %}
+
+{% if loop.index0 == 0 %}
+<div role="tabpanel" class="tab-pane fade in active" id="{{ panel.href }}">
+{% else %}
+<div role="tabpanel" class="tab-pane fade in" id="{{ panel.href }}">
+{% endif %}
+
+    <div id="{{ panel.href }}-header" class="row">
+        <form class="form-inline" role="form">
+            <div class="col-md-3">
+                <button id="create-new-{{ panel.href }}" type="button" class="btn btn-block btn-primary"
+                                                                       data-toggle="modal" data-target="{{ panel.href }}-create-modal">
+                <span class="glyphicon glyphicon-plus"></span>Create New {{ panel.text }}
+                </button>
+            </div>
+        </form><!-- .form-inline -->
+    </div><!-- #{{ panel.href }}-header .row -->
+    <br />
+    <div>
+        <table id="{{ panel.href }}-table" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    
+</div><!-- #{{ panel.href }} .tab-pane fade in -->
+
+{% endfor %}   
+{% endblock mainbody %}

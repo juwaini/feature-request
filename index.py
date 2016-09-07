@@ -3,7 +3,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    panels = (
+            {'href': 'feature-request', 'text': 'Feature Request'},
+            {'href': 'discussions', 'text': 'Discussions'}
+            )
+
+    return render_template('index.html', panels=panels)
 
 @app.route('/login')
 def login():
