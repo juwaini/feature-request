@@ -1,0 +1,18 @@
+{% extends 'modal.html' %}
+
+{% block modalheader %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+    </button>                 
+    <h4 class="modal-title">Create New Feature Request</h4>
+</div>
+{% endblock modalheader %}
+
+{% block navtab %}
+<ul class="nav nav-tabs" role="tablist">
+    <li id="feature-request-details-nav" role="presentation" class="active disabled">
+        <a href="#feature-request-details" role="tab"><strong>Feature Request Details</strong></a>
+    </li>
+</ul>
+{% endblock navtab %}

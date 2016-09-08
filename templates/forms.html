@@ -1,0 +1,12 @@
+{%- macro input(label, id, name='', placeholder='', type="text") -%}
+<div class="form-group">
+    <label for="customer_phone" class="col-sm-2 control-label">{{ label }}</label>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}">
+    </div>
+</div>
+{%- endmacro -%}
+
+{%- macro modal_footer_button(id='', label='', type='primary', action='toggle') -%}
+<button type="button" data-{{ action }}="modal" id="{{ id  }}" class="btn btn-{{ type }}">{{ label }}</button>
+{%- endmacro -%}

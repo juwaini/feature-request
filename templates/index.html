@@ -53,7 +53,7 @@
         <form class="form-inline" role="form">
             <div class="col-md-3">
                 <button id="create-new-{{ panel.href }}" type="button" class="btn btn-block btn-primary"
-                                                                       data-toggle="modal" data-target="#{{ panel.href }}-create-modal">
+                                                                       data-toggle="modal" data-target="#create-{{ panel.href }}-modal">
                 <span class="glyphicon glyphicon-plus"></span>Create New {{ panel.text }}
                 </button>
             </div>
@@ -75,21 +75,6 @@
 </div><!-- #{{ panel.href }} .tab-pane fade in -->
 
 {% endfor %}   
+
 {% endblock mainbody %}
 
-{% block modal %}
-<div class="modal fade" id="feature-request-create-modal" role="dialog" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog modal-lg"><!-- .modal-dialog .modal-lg -->
-        <div class="modal-content"><!-- .modal-content -->
-        
-            <div class="modal-header"><!-- class="modal-header" for "#student-create-modal" -->            
-                <button type="button" class="close" data-dismiss="modal">
-                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>   
-                </button>
-                <h4 class="modal-title">Create New Feature Request</h4>
-            </div><!-- class="modal-header" for "#student-create-modal" -->
-
-        </div><!-- .modal-content -->
-    </div><!-- .modal-dialog .modal-lg -->
-</div><!-- .modal fade #promo-create-voucher-modal -->
-{% endblock modal %}

@@ -56,9 +56,9 @@ class TestFlaskPage(unittest.TestCase):
         """
         self.browser.find_element_by_id('create-new-feature-request').click()
         WebDriverWait(self.browser, 10).until(
-                EC.visibility_of_element_located((By.ID, "feature-request-create-modal"))
+                EC.visibility_of_element_located((By.ID, "create-feature-request-modal"))
                 )
-        self.assertTrue(self.browser.find_element_by_id('feature-request-create-modal').is_displayed())
+        self.assertTrue(self.browser.find_element_by_id('create-feature-request-modal').is_displayed())
 
         self.assertIn('Create New Feature Request', self.browser.find_element_by_class_name('modal-title').text)
 
