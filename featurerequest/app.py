@@ -1,7 +1,17 @@
 from flask import Flask, url_for, render_template, request, jsonify
-from models import *
+from flask.ext.sqlalchemy import SQLAlchemy
+
+from featurerequest.models import Base, FeatureRequest
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
+
+# Use Flask-SQLAlchemy for its engine and session
+# configuration. Load the extension, giving it the app object,
+# and override its default Model class with the pure
+# SQLAlchemy declarative Base class.
+db = SQLAlchemy(app)
+db.Model = Base
 
 @app.route('/')
 def index():
@@ -16,12 +26,17 @@ def index():
 def login():
     return 'Please login'
 
-@app.route('/feature-requests', methods=['GET', 'POST'])
-def feature_requests():
-    if request.method == 'GET':
-        fr = FeatureRequest()
-        retval = {'no-of-feature-requests': fr.query.count()}
-        return jsonify(retval), 200
+@app.route('/api/feature-requests/', methods=['GET'])
+def feature_requests_list():
+    """Return JSON list of all feature request."""
+    fr = (db.session.query(FeatureRequest).all())
+    return jsonify(fr)
+
+@app.route('/api/feature-requests/<int:feature_request_id>', methods=['GET'])
+def feature_request_get(feature_request_id):
+    """Return JSON of a particular feature request"""
+    fr = db.session.query(FeatureRequest).get(feature_request_id)
+    return jsoonify(fs)
 
 if __name__ == '__main__':
     app.run(debug=True)

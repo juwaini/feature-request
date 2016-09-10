@@ -1,33 +1,30 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from index import app
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////db.sqlite3'
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
 
-db = SQLAlchemy(app)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
+engine = create_engine('sqlite:///sqlite3.db', echo=True)
 
-class FeatureRequest(db.Model):
+class FeatureRequest(Base):
     __tablename__ = 'feature-requests'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(2000))
-    #client = db.Column(db.Integer, db.ForeignKey('users.id'))
-    client_priority = db.Column(db.Integer)
-    target_date = db.Column()
-    ticket_url = db.Column(db.String(80))
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(80), unique=True)
+    description = Column(String(2000))
+    client = Column(Integer)
+    client_priority = Column(Integer)
+    target_date = Column(DateTime)
+    ticket_url = Column(String(80))
 
     def __repr__(self):
         return '<Feature Request: %r>' % self.title
-    
-class Client(db.Model):
-    __tablename__ = 'clients'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
 
-    def __repr__(self):
-        return '<Client: %r>' % self.name
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
