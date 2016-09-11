@@ -10,7 +10,7 @@ Base = declarative_base()
 engine = create_engine('sqlite:///sqlite3.db', echo=True)
 
 class FeatureRequest(Base):
-    __tablename__ = 'feature-requests'
+    __tablename__ = 'feature_requests'
 
     id = Column(Integer, primary_key=True)
     title = Column(String(80), unique=True)
