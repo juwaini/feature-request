@@ -19,6 +19,7 @@ class FeatureRequest(Base):
     client_priority = Column(Integer)
     target_date = Column(DateTime)
     ticket_url = Column(String(80))
+    product_area = Column(String(10))
 
     def __repr__(self):
         return '<Feature Request: %r>' % self.title

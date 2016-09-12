@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class TestFlaskPage(unittest.TestCase):
+class TestFeatureRequest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -62,5 +62,11 @@ class TestFlaskPage(unittest.TestCase):
 
         self.assertIn('Create New Feature Request', self.browser.find_element_by_class_name('modal-title').text)
 
+    def checking_for_correct_form_in_add_new_feature_request_modal(self):
+        """
+        Check form in 'Add New Feature Request Modal
+        """
+
+        
 if __name__ == '__main__':
     unittest.main()

@@ -11,28 +11,8 @@
                 {% block navtab %}
                 {% endblock navtab %}
 
-                <div class="tab-content"><!-- .tab-content -->
-                    <!-- LEAD DETAILS BEGIN -->
-                    <div role="tabpanel" class="tab-pane active" id="student-details"><!-- .tab-pane #student-details -->
-                        <form id="student-details-form" class="form-horizontal" role="form"><br><!-- "#student-details-form" -->
-
-                                {{ forms.input('Title:', 'title', 'title', 'i.e: Add new feature') }}
-                                {{ forms.input('Description:', 'description', 'description', 'i.e: Long description...') }}
-                                {{ forms.input('Client:', 'client', 'client', 'i.e: KIV') }}
-                                {{ forms.input('Client Priority:', 'client_priority', 'client_priority', '1, 2, 3, 4, 5') }}
-                                {{ forms.input('Target Date:', 'target_date', 'target_date', '2016/09/08') }}
-                                {{ forms.input('Ticket URL:', 'ticket_url', 'ticket_url', 'https://www.google.com') }}
-                                {{ forms.input('Product Area:', 'product_area', 'product_area', 'KIV') }}
-
-                            <div class="modal-footer">
-                                {{ forms.modal_footer_button('create-feature-request-submit', 'Submit', 'primary')}}
-                                {{ forms.modal_footer_button('create-feature-request-close', 'Close', 'danger', 'dismiss')}}
-                            </div><!-- .modal-footer -->
-
-                        </form><!-- "#lead-details-form" -->
-                    </div><!-- .tab-pane #student-details-->
-
-                </div><!-- .tab-content -->
+                {% block tabcontent %}
+                {% endblock tabcontent%}
             </div><!-- .modal-body -->
 
         </div><!-- .modal-content -->

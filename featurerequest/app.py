@@ -1,6 +1,7 @@
 from flask import Flask, url_for, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
+from featurerequest.forms import FeatureRequestForm
 from featurerequest.models import Base, FeatureRequest
 
 app = Flask(__name__)
@@ -32,11 +33,16 @@ def feature_requests_list():
     fr = (db.session.query(FeatureRequest).all())
     return jsonify(fr)
 
-@app.route('/api/feature-requests/<int:feature_request_id>', methods=['GET'])
+@app.route('/api/feature-request/<int:feature_request_id>', methods=['GET'])
 def feature_request_get(feature_request_id):
     """Return JSON of a particular feature request"""
     fr = db.session.query(FeatureRequest).get(feature_request_id)
-    return jsoonify(fs)
+    return jsonify(fs)
+
+@app.route('/api/feature-request/create', methods=['POST'])
+def feature_request_create():
+    """Create a new feature-request"""
+    return jsonify(request.form)
 
 if __name__ == '__main__':
     app.run(debug=True)

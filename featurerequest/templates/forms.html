@@ -1,12 +1,17 @@
-{%- macro input(label, id, name='', placeholder='', type="text") -%}
+{% macro input(label, id, name='', placeholder='', type='text', form='') %}
 <div class="form-group">
     <label for="customer_phone" class="col-sm-2 control-label">{{ label }}</label>
     <div class="col-sm-6">
-        <input type="text" class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}">
+        <input type="{{ type }}" class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" ng-model="{{ form }}.{{ id }}">
     </div>
 </div>
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro modal_footer_button(id='', label='', type='primary', action='toggle') -%}
-<button type="button" data-{{ action }}="modal" id="{{ id  }}" class="btn btn-{{ type }}">{{ label }}</button>
-{%- endmacro -%}
+{% macro modal_footer_button(id='', label='', type='primary', action='toggle', ngClick='') %}
+<button type="button" 
+        data-{{ action }}="modal" 
+        id="{{ id  }}" 
+        class="btn btn-{{ type }}"
+        {% if ngClick %} ng-click="{{ ngClick }}()" {% endif %}
+    > {{ label }} </button>
+{% endmacro %}

@@ -16,3 +16,40 @@
     </li>
 </ul>
 {% endblock navtab %}
+
+{% block tabcontent %}
+<div class="tab-content"><!-- .tab-content -->
+    <!-- LEAD DETAILS BEGIN -->
+    <div role="tabpanel" class="tab-pane active" id=""><!-- .tab-pane #student-details -->
+        <form id="feature-request-create-form" class="form-horizontal" role="form"><br><!-- "#student-details-form" -->
+                {{ forms.input('Title:', 'title', 'title', 'i.e: Add new feature', form='frForm') }}
+                {{ forms.input('Description:', 'description', 'description', 'i.e: Long description...', form='frForm') }}
+                {{ forms.input('Client:', 'client', 'client', 'i.e: KIV', form='frForm') }}
+                {{ forms.input('Client Priority:', 'client_priority', 'client_priority', '1, 2, 3, 4, 5', form='frForm') }}
+                {{ forms.input('Target Date:', 'target_date', 'target_date', '2016/09/08', form='frForm') }}
+                {{ forms.input('Ticket URL:', 'ticket_url', 'ticket_url', 'https://www.google.com', form='frForm') }}
+                {{ forms.input('Product Area:', 'product_area', 'product_area', 'KIV', form='frForm') }}
+
+            <div class="modal-footer">
+                {{ forms.modal_footer_button('create-feature-request-submit', 'Submit', 'primary', 'toggle', 'onSubmit')}}
+                {{ forms.modal_footer_button('create-feature-request-close', 'Close', 'danger', 'dismiss')}}
+            </div><!-- .modal-footer -->
+
+        </form><!-- "#lead-details-form" -->
+    </div><!-- .tab-pane #student-details-->
+
+</div><!-- .tab-content -->
+<script>
+//$('#create-feature-request-submit').click(function(){
+//    url = '/api/feature-request/create';
+//    form = $('#feature-request-create-form')
+    
+//    $.ajax({
+//        type: 'POST',
+//        url: url, 
+//        data: form,
+//        success: console.log("Success") 
+//    });
+//});
+</script>
+{% endblock tabcontent %}
