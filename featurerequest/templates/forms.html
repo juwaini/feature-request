@@ -1,8 +1,33 @@
-{% macro input(label, id, name='', placeholder='', type='text', form='') %}
+{% macro input(label, catch_kwargs=true) %}
 <div class="form-group">
-    <label for="customer_phone" class="col-sm-2 control-label">{{ label }}</label>
+    <label
+        {% if kwargs.id -%} 
+            for="{{ kwargs.id }}" 
+        {% endif -%}
+        class="col-sm-2 control-label">{{ label }}</label>
     <div class="col-sm-6">
-        <input type="{{ type }}" class="form-control" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" ng-model="{{ form }}.{{ id }}">
+        <input
+        {% if kwargs.type -%}
+            type="{{ kwargs.type }}"
+        {% endif -%}
+         
+        class="form-control" 
+        {% if kwargs.name -%}
+            name="{{ kwargs.name }}" 
+        {% endif -%}
+            
+        {% if kwargs.id -%}
+            id="{{ kwargs.id }}" 
+        {% endif -%}
+        
+        {% if kwargs.placeholder -%}
+            placeholder="{{ kwargs.placeholder }}"
+        {% endif -%} 
+        
+        {% if kwargs.form -%}
+            ng-model="{{ kwargs.form }}.{{ kwargs.id }}"
+        {% endif -%}
+        >
     </div>
 </div>
 {% endmacro %}

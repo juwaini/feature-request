@@ -4,6 +4,14 @@ angular.module('frApp', [])
         $scope.frForm = {};
 
         $scope.onSubmit = function() {
-            console.log("Triggering formSubmit()!")
+            var url = '/api/feature-request/create'
+            console.log(this.frForm)
+            $http.post(url, this.frform).then(function(res){
+                this.formReset()
+            })   
+        };
+
+        $scope.formReset = function() {
+            this.frForm = {}    
         };
     })

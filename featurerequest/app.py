@@ -1,7 +1,6 @@
 from flask import Flask, url_for, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from featurerequest.forms import FeatureRequestForm
 from featurerequest.models import Base, FeatureRequest
 
 app = Flask(__name__)
@@ -42,6 +41,10 @@ def feature_request_get(feature_request_id):
 @app.route('/api/feature-request/create', methods=['POST'])
 def feature_request_create():
     """Create a new feature-request"""
+    data = request.form
+    fr = FeatureRequest(data['field'], data['description'])
+    db.session.add(fr)
+    db.session.commit()
     return jsonify(request.form)
 
 if __name__ == '__main__':
