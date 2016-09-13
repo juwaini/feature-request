@@ -1,7 +1,7 @@
 from flask import Flask, url_for, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-from featurerequest.models import Base, FeatureRequest
+from featurerequest.models import Base, FeatureRequest, Client
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -77,6 +77,19 @@ def feature_request_get(feature_request_id):
     else:
         return 'Id %d not exists.' % feature_request_id, 404
 
+@app.route('/api/client/<int:client_id>', methods=['GET'])
+def client_get(client_id):
+    """Return JSON of a particular client"""
+    client = db.session.query(Client).get(client_id)
+
+    if client:
+        json_obj = {'id': client.id,
+                    'name': client.name,
+                    'email': client.email}
+        return jsonify(json_obj)
+    else:
+        return 'Id %d not exists.' % client_id, 404
+
 #Route to create a new object
 @app.route('/api/feature-request/create', methods=['POST'])
 def feature_request_create():
@@ -96,6 +109,21 @@ def feature_request_create():
         return 'New feature request with id:%d successfully created.' % fr.id
     else:
         return 'Unable to create a new fr.', 404
+    return jsonify(data)
+
+@app.route('/api/client/create', methods=['POST'])
+def client_create():
+    """Create a new client"""
+    data = request.form
+    client = Client(
+            name=data['name'], 
+            email=data['email'])
+    if client:
+        db.session.add(client)
+        db.session.commit()
+        return 'New client with id:%d successfully created.' % client.id
+    else:
+        return 'Unable to create a new client.', 404
     return jsonify(data)
 
 if __name__ == '__main__':
