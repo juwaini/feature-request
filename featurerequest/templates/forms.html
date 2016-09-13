@@ -32,6 +32,40 @@
 </div>
 {% endmacro %}
 
+{% macro textarea(label, catch_kwargs=true) %}
+<div class="form-group">
+    <label for="class" class="col-sm-2 control-label">{{ label }}</label>
+        <div class="col-sm-6">
+            <textarea
+                {% if kwargs.name %}
+                    name="{{ kwargs.name}}"
+                {% endif %}
+
+                {% if kwargs.id%}
+                    id="{{ kwargs.id }}"
+                {% endif %} 
+
+                class="form-control" 
+                
+                {% if kwargs.rows %}
+                    rows="{{ kwargs.rows }}"
+                {% else %}
+                    rows="3"
+                {% endif %}
+                    
+                {% if kwargs.placeholder %}
+                    placeholder="{{ kwargs.placeholder }}"
+                {% endif %}
+
+                {% if kwargs.form %}
+                    ng-model="{{ kwargs.form }}.{{ kwargs.id }}"    
+                {% endif %}
+            >
+            </textarea>
+        </div>
+</div>
+{% endmacro %}
+
 {% macro modal_footer_button(id='', label='', type='primary', action='toggle', ngClick='') %}
 <button type="button" 
         data-{{ action }}="modal" 
