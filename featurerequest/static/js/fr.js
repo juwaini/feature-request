@@ -7,7 +7,7 @@ angular.module('frApp', [])
             var url = '/api/feature-request/create'
             console.log(this.frForm)
             $http.post(url, this.frform).then(function(res){
-                this.formReset()
+                alert(res.data)
             })   
         };
 

@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 from featurerequest.models import Base, FeatureRequest
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 
@@ -12,6 +15,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
 # SQLAlchemy declarative Base class.
 db = SQLAlchemy(app)
 db.Model = Base
+db.create_all()
+engine = create_engine('sqlite:///sqlite3.db', echo=True)
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 @app.route('/')
 def index():
@@ -30,22 +39,47 @@ def login():
 def feature_requests_list():
     """Return JSON list of all feature request."""
     fr = (db.session.query(FeatureRequest).all())
-    return jsonify(fr)
+    json_obj = []
+    for data in fr:
+        json_obj.append({
+            'id': data.id,
+            'title': data.title,
+            'description': data.description
+            })
+    return jsonify(json_obj)
 
 @app.route('/api/feature-request/<int:feature_request_id>', methods=['GET'])
 def feature_request_get(feature_request_id):
     """Return JSON of a particular feature request"""
     fr = db.session.query(FeatureRequest).get(feature_request_id)
-    return jsonify(fs)
+
+    if fr:
+        json_obj = {'id': fr.id,
+                    'title': fr.title,
+                    'description': fr.description}
+        return jsonify(json_obj)
+    else:
+        return 'Id %d not exists.' % feature_request_id, 404
 
 @app.route('/api/feature-request/create', methods=['POST'])
 def feature_request_create():
     """Create a new feature-request"""
     data = request.form
-    fr = FeatureRequest(data['field'], data['description'])
-    db.session.add(fr)
-    db.session.commit()
-    return jsonify(request.form)
+    fr = FeatureRequest(
+            title=data['title'], 
+            description=data['description'], 
+            client=data['client'], 
+            client_priority=data['client_priority'],
+            #target_date=data['target_date'],
+            ticket_url=data['ticket_url'],
+            product_area=data['product_area'])
+    if fr:
+        db.session.add(fr)
+        db.session.commit()
+        return 'New feature request with id:%d successfully created.' % fr.id
+    else:
+        return 'Unable to create a new fr.', 404
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -24,7 +24,7 @@
         <form id="feature-request-create-form" class="form-horizontal" role="form"><br><!-- "#student-details-form" -->
                 {{ forms.input('Title:', id='title', name='title', placeholder='i.e: Add new feature', form='frForm') }}
                 {{ forms.input('Description:', id='description', name='description', placeholder='i.e: Long description...', form='frForm') }}
-                {{ forms.input('Client:', id='client', name='client', placeholder='i.e: KIV', form='frForm') }}
+                {{ forms.input('Client:', id='client', name='client', placeholder='i.e: KIV', type='number', form='frForm') }}
                 {{ forms.input('Client Priority:', id='client_priority', name='client_priority', placeholder='1, 2, 3, 4, 5', form='frForm', type='number') }}
                 {{ forms.input('Target Date:', id='target_date', name='target_date', placeholder='2016/09/08', form='frForm', type='date') }}
                 {{ forms.input('Ticket URL:', id='ticket_url', name='ticket_url', placeholder='https://www.google.com', form='frForm', type='url') }}
