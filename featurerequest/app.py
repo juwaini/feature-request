@@ -26,7 +26,8 @@ session = Session()
 def index():
     panels = (
             {'href': 'feature-request', 'text': 'Feature Request', 'theads': ['date', 'title', 'requester', 'priority']},
-            {'href': 'discussions', 'text': 'Discussions', 'theads': ['date', 'title', 'requester', 'priority', 'status']},
+            {'href': 'client', 'text': 'Client', 'theads': ['date', 'title', 'requester', 'priority']},
+            {'href': 'discussion', 'text': 'Discussion', 'theads': ['date', 'title', 'requester', 'priority', 'status']},
             )
 
     return render_template('index.html', panels=panels)
@@ -34,6 +35,8 @@ def index():
 @app.route('/login')
 def login():
     return 'Please login'
+
+#Route to get whole list
 
 @app.route('/api/feature-requests/', methods=['GET'])
 def feature_requests_list():
@@ -48,6 +51,19 @@ def feature_requests_list():
             })
     return jsonify(json_obj)
 
+@app.route('/api/clients/', methods=['GET'])
+def clients_list():
+    """Return JSON of all clients"""
+    clients = (db.session.query(Client).all())
+    json_obj = []
+    for data in clients:
+        json_obj.append({
+            'id': data.id,
+            'name': data.name
+            })
+    return jsonify(json_obj)
+
+#Route to get an object based on particular ID
 @app.route('/api/feature-request/<int:feature_request_id>', methods=['GET'])
 def feature_request_get(feature_request_id):
     """Return JSON of a particular feature request"""
@@ -61,6 +77,7 @@ def feature_request_get(feature_request_id):
     else:
         return 'Id %d not exists.' % feature_request_id, 404
 
+#Route to create a new object
 @app.route('/api/feature-request/create', methods=['POST'])
 def feature_request_create():
     """Create a new feature-request"""

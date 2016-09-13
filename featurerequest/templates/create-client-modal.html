@@ -1,0 +1,54 @@
+{% extends 'modal.html' %}
+
+{% block modal %}
+<div class="modal fade" id="create-client-modal" role="dialog" aria-labelledby="" aria-hidden="true">
+{% endblock modal %}
+
+{% block modalheader %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+    </button>                 
+    <h4 class="modal-title">Create New Client</h4>
+</div>
+{% endblock modalheader %}
+
+{% block navtab %}
+<ul class="nav nav-tabs" role="tablist">
+    <li id="client-details-nav" role="presentation" class="active disabled">
+        <a href="#client-details" role="tab"><strong>Client Details</strong></a>
+    </li>
+</ul>
+{% endblock navtab %}
+
+{% block tabcontent %}
+<div class="tab-content"><!-- .tab-content -->
+    <!-- LEAD DETAILS BEGIN -->
+    <div role="tabpanel" class="tab-pane active" id=""><!-- .tab-pane #student-details -->
+        <form id="client-create-form" class="form-horizontal" role="form"><br><!-- "#student-details-form" -->
+                {{ forms.input('Name:', id='name', name='name', placeholder='i.e: Please key in your client name', form='clientForm') }}
+                {{ forms.input('Email:', id='email', name='email', placeholder='Client email: test@test.com', form='clientForm') }}
+
+            <div class="modal-footer">
+                {{ forms.modal_footer_button('create-client-submit', 'Submit', 'primary', 'toggle', 'onClientSubmit')}}
+                {{ forms.modal_footer_button('create-client-close', 'Close', 'danger', 'dismiss')}}
+            </div><!-- .modal-footer -->
+
+        </form><!-- "#lead-details-form" -->
+    </div><!-- .tab-pane #student-details-->
+
+</div><!-- .tab-content -->
+<script>
+//$('#create-feature-request-submit').click(function(){
+//    url = '/api/feature-request/create';
+//    form = $('#feature-request-create-form')
+    
+//    $.ajax({
+//        type: 'POST',
+//        url: url, 
+//        data: form,
+//        success: console.log("Success") 
+//    });
+//});
+</script>
+{% endblock tabcontent %}

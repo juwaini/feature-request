@@ -1,7 +1,7 @@
 from flask import Flask
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, Date
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, Date, ForeignKey
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -17,7 +17,7 @@ class FeatureRequest(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(80), unique=True)
     description = Column(String(2000))
-    client = Column(Integer)
+    client = Column(Integer, ForeignKey('clients.id'))
     client_priority = Column(Integer)
     #target_date = Column(Date)
     ticket_url = Column(String(80))
@@ -26,6 +26,14 @@ class FeatureRequest(Base):
     def __repr__(self):
         return '<Feature Request:(title=%s, description=%s, client=[KIV])>' % (
                 self.title, self.description)
+
+class Client(Base):
+    __tablename__ = 'clients'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), unique=True)
+    email = Column(String(80))
+    #date_created = Column(Date, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
 if __name__ == "__main__":
     import sqlalchemy
