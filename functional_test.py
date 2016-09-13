@@ -37,12 +37,18 @@ class TestFeatureRequest(unittest.TestCase):
                 EC.visibility_of_element_located((By.ID, "feature-request"))
                 )
         self.assertTrue(self.browser.find_element_by_id('feature-request').is_displayed())
-        
-        self.browser.find_element_by_id('discussions-nav').click()
+         
+        self.browser.find_element_by_id('client-nav').click()
         WebDriverWait(self.browser, 10).until(
-                EC.visibility_of_element_located((By.ID, "discussions"))
+                EC.visibility_of_element_located((By.ID, "client"))
                 )
-        self.assertTrue(self.browser.find_element_by_id('discussions').is_displayed())
+        self.assertTrue(self.browser.find_element_by_id('client').is_displayed())
+       
+        self.browser.find_element_by_id('discussion-nav').click()
+        WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located((By.ID, "discussion"))
+                )
+        self.assertTrue(self.browser.find_element_by_id('discussion').is_displayed())
 
         self.browser.find_element_by_id('feature-request-nav').click()
         WebDriverWait(self.browser, 10).until(
@@ -66,6 +72,24 @@ class TestFeatureRequest(unittest.TestCase):
         """
         Check form in 'Add New Feature Request Modal
         """
+
+    def opening_add_new_client_modal(self):
+        """
+        Click 'Add New Feature Request' button and open a modal
+        """
+        self.browser.find_element_by_id('client-nav').click()
+        WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located((By.ID, "client"))
+                )
+        self.assertTrue(self.browser.find_element_by_id('client').is_displayed())
+
+        self.browser.find_element_by_id('create-new-client').click()
+        WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located((By.ID, "create-client-modal"))
+                )
+        self.assertTrue(self.browser.find_element_by_id('create-client-modal').is_displayed())
+
+        self.assertIn('Create New Client', self.browser.find_element_by_class_name('modal-title').text)
 
         
 if __name__ == '__main__':
