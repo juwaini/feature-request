@@ -1,37 +1,59 @@
 import os
-from featurerequest.app import app
 import unittest
 import tempfile
 import requests
 import datetime
 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from featurerequest.models import Base, FeatureRequest, Client
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testing.db'
+
+# Use Flask-SQLAlchemy for its engine and session
+# configuration. Load the extension, giving it the app object,
+# and override its default Model class with the pure
+# SQLAlchemy declarative Base class.
+db = SQLAlchemy(app)
+db.Model = Base
+db.create_all()
+engine = create_engine('sqlite:///testing.db', echo=True)
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
 class FeatureRequestTestCase(unittest.TestCase):
-    
+
+    url = 'http://localhost:5000'
+    database = os.getcwd() + '/testing.db'
+
     def setUp(self):
-        self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-        app.config['TESTING'] = True
-        self.app = app.test_client()
+        open(self.database, 'a').close()
+        #populate_client_database()
 
     def tearDown(self):
-        os.close(self.db_fd)
-        os.unlink(app.config['DATABASE'])
+        self.assertEqual('/Users/juwaini/feature-request/testing.db', self.database)
+        os.remove(self.database)
 
-    def test_empty_db(self):
-        rv = self.app.get('/')
-        print(rv)
-
-    def test_create_fr(self):
-        form = {'title': 'This is a test title',
-                'description': 'A short description for testing.',
-                'client': 1,
-                'client_priority': 5,
-                'target_date': datetime.date.today,
-                'ticket_url': 'https://www.google.com',
-                'product_area': 'Billings'
-                }
-
-        r = requests.post('http://localhost:5000/api/feature-request/create', data=form)
+    def test_index_page(self):
+        r = requests.get(self.url + '/')
         self.assertEqual(r.status_code, 200)
+
+    def test_get_feature_requests(self):
+        r = requests.get(self.url + '/api/feature-requests/')
+        self.assertEqual(r.status_code, 200)
+
+    def test_get_clients(self):
+        r = requests.get(self.url + '/api/clients/')
+        self.assertEqual(r.status_code, 200)
+
+    def populate_client_database(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main()
