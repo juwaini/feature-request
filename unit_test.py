@@ -34,9 +34,11 @@ class FeatureRequestTestCase(unittest.TestCase):
 
     def setUp(self):
         open(self.database, 'a').close()
-        #populate_client_database()
+        db.create_all()
+        self.populate_client_database()
 
     def tearDown(self):
+        db.drop_all()
         self.assertEqual('/Users/juwaini/feature-request/testing.db', self.database)
         os.remove(self.database)
 
@@ -45,15 +47,24 @@ class FeatureRequestTestCase(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
 
     def test_get_feature_requests(self):
-        r = requests.get(self.url + '/api/feature-requests/')
+        r = requests.get(self.url + '/api/feature-request/')
         self.assertEqual(r.status_code, 200)
 
     def test_get_clients(self):
-        r = requests.get(self.url + '/api/clients/')
+        r = requests.get(self.url + '/api/client/')
         self.assertEqual(r.status_code, 200)
 
+    def test_get_one_client(self):
+        r = requests.get(self.url + '/api/client/1')
+        self.assertEqual(r.status_code, 404)
+
     def populate_client_database(self):
-        pass
+        db.session.add(Client(name='Microsoft', email='test@microsoft.com'))
+        db.session.commit()
+        db.session.add(Client(name='Google', email='test@google.com'))
+        db.session.commit()
+        db.session.add(Client(name='Yahoo', email='test@yahoo.com'))
+        db.session.commit()
 
 if __name__ == "__main__":
     unittest.main()

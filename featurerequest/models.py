@@ -34,7 +34,7 @@ class Client(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
     email = Column(String(80))
-    #date_created = Column(Date, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    #date_created = Column(Date, default=datetime.date.today, onupdate=datetime.date.today)
 
 if __name__ == "__main__":
     import sqlalchemy
