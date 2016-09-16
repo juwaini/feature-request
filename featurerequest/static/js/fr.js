@@ -11,11 +11,11 @@ angular.module('frApp', [])
         $scope.init = function() {
             this.clientTable.ajax.url('/api/datatables/client/').load();
             this.featureRequestTable.ajax.url('/api/datatables/feature-request/').load();
-            $http.get('/api/dropdown/client/').then(function(data)  {
-                            $scope.clientsData = data;
-                            console.log($scope.clientsData);
-                            )
-            }
+            $http.get('/api/dropdown/client/')
+                .then(function(response)  {
+                            $scope.clientsData = response.data;
+                            //console.log($scope.clientsData);
+                })
         };
 
         $scope.onFeatureRequestSubmit = function() {
