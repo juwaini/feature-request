@@ -30,7 +30,7 @@ session = Session()
 @app.route('/')
 def index():
     panels = (
-            {'href': 'feature-request', 'text': 'Feature Request', 'theads': ['date', 'title', 'requester', 'priority']},
+            {'href': 'feature-request', 'text': 'Feature Request', 'theads': ['ID', 'Title', 'Client', 'Priority']},
             {'href': 'client', 'text': 'Client', 'theads': ['ID', 'Name', 'Email']},
             {'href': 'discussion', 'text': 'Discussion', 'theads': ['date', 'title', 'requester', 'priority', 'status']},
             )
@@ -40,6 +40,20 @@ def index():
 @app.route('/login')
 def login():
     return 'Please login'
+
+#API to generate client dropdown
+@app.route('/api/dropdown/<string:table>/', methods=['GET'])
+def generate_client_dropdown(table):
+    if table == 'client':
+        clients = db.session.query(Client).all()
+
+    result = []
+
+    for client in clients:
+        data = dict(id=client.id, name=client.name)
+        result.append(data)
+        
+    return jsonify(result)
 
 #API to generate datatables
 @app.route('/api/datatables/<string:table>/', methods=['GET'])
@@ -54,7 +68,7 @@ def generate_client_table(table):
         if table == 'client':
             data = row.id, row.name, row.email
         elif table == 'feature-request':
-            data = row.id, row.title, row.description
+            data = row.id, row.title, row.description, row.client
         result.append(data)
     return jsonify({'data': result})
 
@@ -95,37 +109,27 @@ def get_clients(client_id=None):
 @app.route('/api/feature-request/create', methods=['POST'])
 def feature_request_create():
     """Create a new feature-request"""
-    data = request.form
-    fr = FeatureRequest(
-            title=data['title'], 
-            description=data['description'], 
-            client=data['client'], 
-            client_priority=data['client_priority'],
-            #target_date=data['target_date'],
-            ticket_url=data['ticket_url'],
-            product_area=data['product_area'])
-    if fr:
-        db.session.add(fr)
-        db.session.commit()
-        return 'New feature request with id:%d successfully created.' % fr.id
-    else:
-        return 'Unable to create a new fr.', 404
-    return jsonify(data)
+    data = request.get_json(force=True)
+    fr = FeatureRequest()
+    fr.title = data['title']
+    fr.description = data['description']
+    fr.client = data['client']
+    db.session.add(fr)
+    db.session.commit()
+        
+    return 'New feature request with id:%d successfully created.' % (fr.id), status.HTTP_200_OK
 
 @app.route('/api/client/create', methods=['POST'])
 def client_create():
     """Create a new client"""
-    data = request.form
-    client = Client(
-            name=data['name'], 
-            email=data['email'])
-    if client:
-        db.session.add(client)
-        db.session.commit()
-        return 'New client with id:%d successfully created.' % client.id
-    else:
-        return 'Unable to create a new client.', 404
-    return jsonify(data)
+    data = request.get_json(force=True)
+    client = Client()
+    client.name = data['name']
+    client.email = data['email']
+    db.session.add(client)
+    db.session.commit()
+
+    return 'New client with id:%d successfully created.' % (client.id), status.HTTP_200_OK
 
 if __name__ == '__main__':
     app.run(debug=True)

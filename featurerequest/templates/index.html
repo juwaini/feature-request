@@ -56,8 +56,8 @@
     <div id="{{ panel.href }}-header" class="row">
         <form class="form-inline" role="form">
             <div class="col-md-3">
-                <button id="create-new-{{ panel.href }}" type="button" class="btn btn-block btn-primary"
-                                                                       data-toggle="modal" data-target="#create-{{ panel.href }}-modal">
+                <button id="create-{{ panel.href }}-modal" type="button" class="btn btn-block btn-primary"
+                                                                       data-toggle="modal" data-target="#{{ panel.href }}-modal">
                 <span class="glyphicon glyphicon-plus"></span>Create New {{ panel.text }}
                 </button>
             </div>

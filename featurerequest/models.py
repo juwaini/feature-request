@@ -20,7 +20,7 @@ class FeatureRequest(Base):
     description = Column(String(2000))
     client = Column(Integer, ForeignKey('clients.id'))
     client_priority = Column(Integer)
-    #target_date = Column(Date)
+    target_date = Column(Date)
     ticket_url = Column(String(80))
     product_area = Column(String(10))
 
@@ -34,7 +34,8 @@ class Client(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
     email = Column(String(80))
-    #date_created = Column(Date, default=datetime.date.today, onupdate=datetime.date.today)
+    date_created = Column(Date, default=datetime.date.today)
+    date_edited = Column(Date, default=None, onupdate=datetime.date.today)
 
 if __name__ == "__main__":
     import sqlalchemy
