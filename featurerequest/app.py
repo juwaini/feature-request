@@ -31,7 +31,7 @@ session = Session()
 def index():
     panels = (
             {'href': 'feature-request', 'text': 'Feature Request', 'theads': ['date', 'title', 'requester', 'priority']},
-            {'href': 'client', 'text': 'Client', 'theads': ['date', 'title', 'requester', 'priority']},
+            {'href': 'client', 'text': 'Client', 'theads': ['ID', 'Name', 'Email']},
             {'href': 'discussion', 'text': 'Discussion', 'theads': ['date', 'title', 'requester', 'priority', 'status']},
             )
 
@@ -40,6 +40,23 @@ def index():
 @app.route('/login')
 def login():
     return 'Please login'
+
+#API to generate datatables
+@app.route('/api/datatables/<string:table>/', methods=['GET'])
+def generate_client_table(table):
+    if table == 'client':
+        rows = (db.session.query(Client).all())
+    elif table == 'feature-request':
+        rows = (db.session.query(FeatureRequest).all())
+
+    result = []
+    for row in rows:
+        if table == 'client':
+            data = row.id, row.name, row.email
+        elif table == 'feature-request':
+            data = row.id, row.title, row.description
+        result.append(data)
+    return jsonify({'data': result})
 
 #Route to get whole list or a particular feature-request
 @app.route('/api/feature-request/<int:feature_request_id>', methods=['GET'])
@@ -62,14 +79,14 @@ def get_clients(client_id=None):
         client = db.session.query(Client).get(client_id)
         if not client:
             return "Resource not found.", status.HTTP_404_NOT_FOUND
-        data = dict(name=client.name, email=client.email)
+        data = dict(id=client.id, name=client.name, email=client.email)
         schema = ClientSchema()
         result = schema.dump(data)
         return jsonify(result.data)
     clients = (db.session.query(Client).all())
     result = []
     for client in clients:
-        data = dict(name=client.name, email=client.email)
+        data = dict(id=client.id, name=client.name, email=client.email)
         schema = ClientSchema()
         result.append(schema.dump(data).data)
     return jsonify(result)

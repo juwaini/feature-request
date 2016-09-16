@@ -3,6 +3,13 @@ angular.module('frApp', [])
 
         $scope.frForm = {};
         $scope.clientForm = {};
+        $scope.clientTable = $('#client-table').DataTable();
+        $scope.featureRequestTable = $('#feature-request-table').DataTable();
+
+        $scope.init = function() {
+            this.clientTable.ajax.url('/api/datatables/client/').load()
+            this.featureRequestTable.ajax.url('/api/datatables/feature-request/').load()
+        };
 
         $scope.onFeatureRequestSubmit = function() {
             var url = '/api/feature-request/create'
