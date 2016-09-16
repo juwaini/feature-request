@@ -2,6 +2,8 @@ from flask import Flask, url_for, render_template, request, jsonify
 from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
 
+from featurerequest.schema import FeatureRequestSchema, ClientSchema
+
 from featurerequest.models import Base, FeatureRequest, Client
 
 from sqlalchemy import create_engine
@@ -60,9 +62,17 @@ def get_clients(client_id=None):
         client = db.session.query(Client).get(client_id)
         if not client:
             return "Resource not found.", status.HTTP_404_NOT_FOUND
-        return jsonify({'client': client})
-    client = (db.session.query(Client).all())
-    return jsonify({'client': client})
+        data = dict(name=client.name, email=client.email)
+        schema = ClientSchema()
+        result = schema.dump(data)
+        return jsonify(result.data)
+    clients = (db.session.query(Client).all())
+    result = []
+    for client in clients:
+        data = dict(name=client.name, email=client.email)
+        schema = ClientSchema()
+        result.append(schema.dump(data).data)
+    return jsonify(result)
 
 #Route to create a new object
 @app.route('/api/feature-request/create', methods=['POST'])
