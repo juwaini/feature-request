@@ -34,7 +34,21 @@
                 {{ forms.input('Client Priority:', id='client_priority', name='client_priority', placeholder='1, 2, 3, 4, 5', form='frForm', type='number') }}
                 {{ forms.input('Target Date:', id='target_date', name='target_date', placeholder='2016/09/08', form='frForm', type='date') }}
                 {{ forms.input('Ticket URL:', id='ticket_url', name='ticket_url', placeholder='https://www.google.com', form='frForm', type='url') }}
-                {{ forms.input('Product Area:', id='product_area', name='product_area', placeholder='KIV', form='frForm') }}
+
+                {% raw %}
+                <div class="form-group">
+                    <label for="product_area" class="col-sm-2 control-label">Product Area:</label>
+                    <div class="col-sm-4">
+                        <select 
+                            ng-model="frForm.product_area" 
+                            class="form-control">
+                            <option value=""> SELECT PRODUCT AREA </option>
+                            <option ng-repeat="s in productArea" 
+                                    value="{{s.key}}">{{s.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                {% endraw %}
 
             <div class="modal-footer">
                 {{ forms.modal_footer_button('create-feature-request-submit', 'Submit', 'primary', 'toggle', 'onFeatureRequestSubmit')}}

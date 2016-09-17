@@ -80,11 +80,11 @@
             ng-model="{{ kwargs.form }}.{{ kwargs.id }}" 
             {% endif %}
             class="form-control">
-            <option value="">--SELECT CLIENTS--</option>
+            <option value=""> SELECT {{ kwargs.id }} </option>
             {% if kwargs.options %}
             <option ng-repeat="{{ kwargs.options }}" 
             {% raw %}
-                value="{{ client.id }}">{{ client['name'] }}</option>
+                value="{{ client.id }}">{{ client.name }}</option>
             {% endraw %}
             {% endif %}
         </select>

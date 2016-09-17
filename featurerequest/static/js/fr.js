@@ -8,13 +8,20 @@ angular.module('frApp', [])
         $scope.featureRequestModal = $('#feature-request-modal');
         $scope.clientModal = $('#client-modal');
 
+        $scope.productArea = [
+            {key: 'Policies', value: 'Policies'},
+            {key: 'Billing', value: 'Billing'},
+            {key: 'Claims', value: 'Claims'},
+            {key: 'Reports', value: 'Reports'}
+        ];
+        
         $scope.init = function() {
             this.clientTable.ajax.url('/api/datatables/client/').load();
             this.featureRequestTable.ajax.url('/api/datatables/feature-request/').load();
-            $http.get('/api/dropdown/client/')
+            $http.get('/api/client/')
                 .then(function(response)  {
                             $scope.clientsData = response.data;
-                            //console.log($scope.clientsData);
+                            console.log($scope.clientsData);
                 })
         };
 
