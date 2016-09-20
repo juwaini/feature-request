@@ -2,7 +2,7 @@ import os
 import unittest
 import tempfile
 import requests
-import datetime
+from datetime import date
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -14,31 +14,32 @@ from sqlalchemy.orm import sessionmaker
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testing.db'
 
-# Use Flask-SQLAlchemy for its engine and session
-# configuration. Load the extension, giving it the app object,
-# and override its default Model class with the pure
-# SQLAlchemy declarative Base class.
-db = SQLAlchemy(app)
-db.Model = Base
-db.create_all()
-engine = create_engine('sqlite:///testing.db', echo=True)
 
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-session = Session()
-
-class FeatureRequestTestCase(unittest.TestCase, db):
+class FeatureRequestTestCase(unittest.TestCase):
 
     url = 'http://localhost:5000'
     database = os.getcwd() + '/testing.db'
 
     def setUp(self):
+        # Use Flask-SQLAlchemy for its engine and session
+        # configuration. Load the extension, giving it the app object,
+        # and override its default Model class with the pure
+        # SQLAlchemy declarative Base class.
+        self.db = SQLAlchemy(app)
+        self.db.Model = Base
+        self.db.create_all()
+        engine = create_engine('sqlite:///testing.db', echo=True)
+
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+       
         #open(self.database, 'a').close()
-        db.create_all()
-        self.populate_client_database()
+        self.db.create_all()
+        #self.populate_client_database()
 
     def tearDown(self):
-        db.drop_all()
+        self.db.drop_all()
         #self.assertEqual('/Users/juwaini/feature-request/testing.db', self.database)
         #os.remove(self.database)
 
@@ -57,7 +58,7 @@ class FeatureRequestTestCase(unittest.TestCase, db):
 
     def test_get_one_client(self):
         r = requests.get(self.url + '/api/client/1')
-        print(r.json())
+        #print(r.json())
         self.assertEqual(r.status_code, 404)
 
     def populate_client_database(self):

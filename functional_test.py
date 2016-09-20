@@ -1,6 +1,7 @@
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -19,6 +20,7 @@ class TestFeatureRequest(unittest.TestCase):
         self.go_to_correct_website()
         self.displaying_correct_subpage()
         self.opening_add_new_feature_request_modal()
+        self.opening_add_new_client_modal()
         #self.correctly_redirect_to_logout()
 
     def go_to_correct_website(self):
@@ -60,13 +62,17 @@ class TestFeatureRequest(unittest.TestCase):
         """
         Click 'Add New Feature Request' button and open a modal
         """
-        self.browser.find_element_by_id('create-new-feature-request').click()
+        self.browser.find_element_by_id('create-feature-request-modal').click()
         WebDriverWait(self.browser, 10).until(
-                EC.visibility_of_element_located((By.ID, "create-feature-request-modal"))
+                EC.visibility_of_element_located((By.ID, "feature-request-modal"))
                 )
-        self.assertTrue(self.browser.find_element_by_id('create-feature-request-modal').is_displayed())
+        self.assertTrue(self.browser.find_element_by_id('feature-request-modal').is_displayed())
 
         self.assertIn('Create New Feature Request', self.browser.find_element_by_class_name('modal-title').text)
+        self.browser.find_element_by_id('create-feature-request-close').click()
+        WebDriverWait(self.browser, 10).until(
+                EC.invisibility_of_element_located((By.ID, "feature-request-modal")) 
+                )
 
     def checking_for_correct_form_in_add_new_feature_request_modal(self):
         """
@@ -77,20 +83,30 @@ class TestFeatureRequest(unittest.TestCase):
         """
         Click 'Add New Feature Request' button and open a modal
         """
+        WebDriverWait(self.browser, 10).until(
+                EC.visibility_of_element_located((By.ID, "client-nav")) 
+                )
+
+        self.assertTrue(self.browser.find_element_by_id('client-nav').is_displayed())
         self.browser.find_element_by_id('client-nav').click()
         WebDriverWait(self.browser, 10).until(
-                EC.visibility_of_element_located((By.ID, "client"))
+                EC.visibility_of_element_located((By.ID, "client-nav")) 
                 )
-        self.assertTrue(self.browser.find_element_by_id('client').is_displayed())
-
-        self.browser.find_element_by_id('create-new-client').click()
+        self.assertTrue(self.browser.find_element_by_id('client-nav').is_displayed())
+        
+        self.browser.find_element_by_id('create-client-modal').click()
         WebDriverWait(self.browser, 10).until(
-                EC.visibility_of_element_located((By.ID, "create-client-modal"))
+                EC.visibility_of_element_located((By.ID, "client-modal")) 
                 )
-        self.assertTrue(self.browser.find_element_by_id('create-client-modal').is_displayed())
+
+        self.assertTrue(self.browser.find_element_by_id('client-modal').is_displayed())
 
         self.assertIn('Create New Client', self.browser.find_element_by_class_name('modal-title').text)
-
+        #self.browser.find_element_by_id('name').keys('Titanium')
+        #self.browser.find_element_by_id('email').keys('test@titanium.com')
+        #self.browser.find_element_by_id('create-client-submit').click()
+        #WebDriverWait(self.browser, 10).until(
+        #        EC.alertIsPresent())
         
 if __name__ == '__main__':
     unittest.main()
